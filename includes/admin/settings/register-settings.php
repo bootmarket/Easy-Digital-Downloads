@@ -1018,6 +1018,37 @@ function edd_select_callback($args) {
 }
 
 /**
+ * Multiselect Callback
+ *
+ * Renders multiselect fields.
+ *
+ * @since 1.8
+ * @param array $args Arguments passed by the setting
+ * @global $edd_options Array of all the EDD Options
+ * @return void
+ */
+function edd_multiselect_callback($args) {
+	global $edd_options;
+
+	if ( isset( $edd_options[ $args['id'] ] ) )
+		$value = $edd_options[ $args['id'] ];
+	else
+		$value = isset( $args['std'] ) ? $args['std'] : '';
+
+	$html = '<select id="edd_settings_' . $args['section'] . '[' . $args['id'] . ']" name="edd_settings_' . $args['section'] . '[' . $args['id'] . ']" multiple />';
+
+	foreach ( $args['options'] as $option => $name ) :
+		$selected = selected( $option, $value, false );
+		$html .= '<option value="' . $option . '" ' . $selected . '>' . $name . '</option>';
+	endforeach;
+
+	$html .= '</select>';
+	$html .= '<label for="edd_settings_' . $args['section'] . '[' . $args['id'] . ']" style="vertical-align: top;"> '  . $args['desc'] . '</label>';
+
+	echo $html;
+}
+
+/**
  * Rich Editor Callback
  *
  * Renders rich editor fields.
